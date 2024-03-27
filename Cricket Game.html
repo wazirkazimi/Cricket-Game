@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            align-items: center;
+        }
+
+        body {
+            background-image: url(bg.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        section {
+            text-align: center;
+        }
+
+        button {
+            margin: 50px;
+            width: 90px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+
+        }
+
+        .re {
+            background-color: red;
+            margin-left: 46%;
+            margin-top: 3%;
+            color: white;
+
+        }
+
+        h2 {
+            font-size: larger;
+            margin-left: auto;
+            margin-right: auto;
+            /* padding: 30px; */
+            text-align: center;
+        }
+
+        .card ul li {
+            list-style: none;
+            padding: 10px;
+        }
+
+        .card {
+            background-color: black;
+            color: white;
+            font-size: large;
+            width: 215px;
+            height: 190px;
+            display: flex;
+            border-radius: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 30px;
+            text-align: center;
+        }
+        @media  (max-width: 500px){
+            body {
+            background-image: url(bg.png);
+            background-repeat: repeat;
+            background-size: auto;
+            background-position: center;
+            filter: blur(10%);
+        }
+        .re {
+            background-color: red;
+            margin-left: 39%;
+            margin-top: 49%;
+            color: white;
+
+        }
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <h1>Choose any One Option</h1>
+        <button onclick="bat()">Bat</button>
+        <button onclick="ball()">Ball</button>
+        <button onclick="stamp()">Stump</button>
+    </section>
+    <h2></h2>
+    <div class="card">
+        <ul>
+            <li>Won: 0</li>
+            <li>Lost: 0</li>
+            <li>Tie: 0</li>
+        </ul>
+    </div>
+    <button class="re" type="button" onclick="resetScore()">Reset</button>
+    <script>
+        let score;
+
+        let scoreStr = localStorage.getItem("score");
+        if (scoreStr) {
+            score = JSON.parse(scoreStr);
+        } else {
+            score = {
+                win: 0,
+                lose: 0,
+                tie: 0,
+            };
+            localStorage.setItem("score", JSON.stringify(score));
+        }
+
+        function updateScoreDisplay() {
+            document.querySelectorAll(".card ul li")[0].textContent = `Won: ${score.win}`;
+            document.querySelectorAll(".card ul li")[1].textContent = `Lost: ${score.lose}`;
+            document.querySelectorAll(".card ul li")[2].textContent = `Tie: ${score.tie}`;
+        }
+
+        function updateScore() {
+            localStorage.setItem("score", JSON.stringify(score));
+            updateScoreDisplay();
+        }
+
+        function bat() {
+            let my = 'bat';
+            let randno = Math.round(Math.random() * 2) + 1;
+            let computer = ComputerChoice(randno);
+            let result = checkResult(my, computer);
+            document.querySelector("h2").innerHTML = `<h2>${result}</h2>`;
+            updateScore();
+        }
+
+        function ball() {
+            let my = 'ball';
+            let randno = Math.round(Math.random() * 2) + 1;
+            let computer = ComputerChoice(randno);
+            let result = checkResult(my, computer);
+            document.querySelector("h2").innerHTML = `<h2>${result}</h2>`;
+            updateScore();
+        }
+
+        function stamp() {
+            let my = 'stamp';
+            let randno = Math.round(Math.random() * 2) + 1;
+            let computer = ComputerChoice(randno);
+            let result = checkResult(my, computer);
+            document.querySelector("h2").innerHTML = `<h2>${result}</h2>`;
+            updateScore();
+        }
+
+        function ComputerChoice(randno) {
+            if (randno === 1) {
+                return 'bat';
+            } else if (randno === 2) {
+                return 'ball';
+            } else {
+                return 'stamp';
+            }
+        }
+
+        function checkResult(my, computer) {
+            if (my === computer) {
+                score.tie++;
+                return 'Tie 😶';
+            } else if ((my === 'bat' && computer === 'ball') ||
+                (my === 'ball' && computer === 'stamp') ||
+                (my === 'stamp' && computer === 'bat')) {
+                score.win++;
+                return 'You Won 🏅🥳';
+            } else {
+                score.lose++;
+                return 'Computer Won 😟';
+            }
+        }
+
+        function resetScore() {
+            score = {
+                win: 0,
+                lose: 0,
+                tie: 0,
+            };
+            updateScore();
+            alert("Sure! Want to Reset the Scores.?");
+        }
+
+        // Initialize score display
+        updateScoreDisplay();
+    </script>
+</body>
+
+</html>
